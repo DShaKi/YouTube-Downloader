@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QPushButton, QLabel
-from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtCore import Qt, QThread
 from pytube import YouTube
 
@@ -42,6 +42,7 @@ class Ui(QWidget):
 
         self.setLayout(self.fl)
         self.setWindowTitle("Youtube Downloader")
+        self.setWindowIcon(QIcon('img/logo.png'))
         self.resize(1000, 120)
 
     def btn_clicked(self):
