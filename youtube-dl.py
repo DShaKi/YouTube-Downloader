@@ -1,7 +1,23 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QPushButton, QLabel
 from PyQt5.QtGui import QCursor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread
 from pytube import YouTube
+
+class download_thread(QThread):
+    def __init__(self, input):
+        QThread.__init__(self)
+        self.input_btn = input
+
+    def run(self):
+        url = self.input_btn.text()
+        youtube = YouTube(url)
+        video = youtube.streams.first()
+        print("Video title: ", video.title)
+        print("Downloading in Downloads folder")
+        print("Please be patient")
+        video.download('C:\Video')
+        print("Downloaded")
+        print("Please check for the video in C:\Video")
 
 class Ui(QWidget):
     def __init__(self):
@@ -18,7 +34,6 @@ class Ui(QWidget):
         self.url_btn.setText("Download")
         self.url_btn.clicked.connect(self.btn_clicked)
 
-
         self.label.setAlignment(Qt.AlignCenter)
 
         self.fl.addRow("URL:", self.url_input)
@@ -30,15 +45,8 @@ class Ui(QWidget):
         self.resize(1000, 120)
 
     def btn_clicked(self):
-        self.url = self.url_input.text()
-        self.youtube = YouTube(self.url)
-        self.video = self.youtube.streams.first()
-        print("Video title: ", self.video.title)
-        print("Downloading in Downloads folder")
-        print("Please be patient")
-        self.video.download('C:\Video')
-        print("Downloaded")
-        print("Please check for the video in C:\Video")
+        self.download = download_thread(self.url_input)
+        self.download.start()
 
 if __name__ == "__main__":
     app = QApplication([])
