@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QPushButton, QLabel
 from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtCore import Qt, QThread
+import tkinter as tk
+from tkinter import messagebox
 from pytube import YouTube
 
 class download_thread(QThread):
@@ -12,12 +14,12 @@ class download_thread(QThread):
         url = self.input_btn.text()
         youtube = YouTube(url)
         video = youtube.streams.first()
-        print("Video title: ", video.title)
-        print("Downloading in Downloads folder")
-        print("Please be patient")
+        root = tk.Tk()
+        root.withdraw()
+        messagebox.showinfo("Vidoe title", video.title)
+        messagebox.showinfo("Path", "Downloading in Downloads folder, please be patient!")
         video.download('C:\Video')
-        print("Downloaded")
-        print("Please check for the video in C:\Video")
+        messagebox.showinfo("Downloaded", "Downloaded!, Please check for the video in C:\Video")
 
 class Ui(QWidget):
     def __init__(self):
